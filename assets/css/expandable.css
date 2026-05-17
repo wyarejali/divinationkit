@@ -1,0 +1,31 @@
+/*
+ * DiviNationKit — Expandable Text Block
+ */
+
+.expandable-wrapper {
+    color: var(--dnk-exp-text, inherit);
+}
+
+.expandable-wrapper .exp-content {
+    max-height: var(--dnk-exp-collapsed, 80px);
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.expandable-wrapper.is-expanded .exp-content {
+    max-height: none;
+}
+
+.expandable-wrapper .exp-toggle {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--dnk-exp-button, #1959ff);
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.expandable-wrapper .exp-toggle:hover,
+.expandable-wrapper .exp-toggle:focus {
+    opacity: 0.85;
+}

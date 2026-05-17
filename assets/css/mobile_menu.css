@@ -1,0 +1,91 @@
+/*
+ * DiviNationKit — Mobile Dropdown Menu
+ * Colors source from CSS custom properties injected by the plugin: only
+ *   --dnk-mobile-icon      icon + open-state toggler background
+ *   --dnk-mobile-icon-tint 10% alpha of the icon color, used at rest
+ */
+
+.et_mobile_menu {
+    padding: 0;
+}
+/* Default will be content height and if the content exceeds the height, it will scroll. The height can be set in the customizer. */
+ul#mobile_menu1 {
+    padding: 20px 0 0 0 !important;
+    max-height: var(--dnk-mobile-menu-height);
+    overflow-y: auto;
+}
+
+/* Scroll but hide scrollbar for all browsers */
+ul#mobile_menu1::-webkit-scrollbar {
+    display: none;
+}
+
+#page-container .mobile_nav .menu-item a {
+    padding: 7px 22px;
+}
+
+#page-container .mobile_nav .menu-item-has-children {
+    position: relative;
+}
+
+#page-container .mobile_nav .menu-item-has-children > a {
+    background: transparent;
+}
+
+/* Sub menu */
+#page-container .mobile_nav .dina_sub_menu {
+    display: none;
+    margin-left: 22px;
+    padding: 0;
+}
+
+#page-container .mobile_nav .dina_sub_menu li {
+    list-style: none !important;
+    padding: 0;
+}
+
+/* Toggler */
+#page-container .mobile_nav .mobile_menu_toggler {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0 !important;
+    border: none !important;
+    background: var(--dnk-mobile-icon-bg, rgba(1, 86, 77, 0.1)) !important;
+    border-radius: var(--dnk-mobile-toggler-roundness);
+    text-align: center;
+    opacity: 1 !important;
+    z-index: 999;
+}
+
+/* Toggler icon */
+#page-container .mobile_nav .mobile_menu_toggler::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    content: '\33';
+    font-family: 'ETmodules';
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--dnk-mobile-icon, #01564d) !important;
+    padding: 3px;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transition: all 0.4s ease !important;
+    transition: all 0.4s ease !important;
+}
+
+/* Open state */
+#page-container .mobile_nav .mobile_menu_toggler.menu-open {
+    background: var(--dnk-mobile-active-icon-bg, #01564d) !important;
+    border-bottom: 1px solid #fff !important;
+}
+
+#page-container .mobile_nav .mobile_menu_toggler.menu-open::after {
+    content: '\32';
+    color: var(--dnk-mobile-active-icon, #ffffff) !important;
+}

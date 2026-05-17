@@ -1,0 +1,689 @@
+/*
+ * DiviNationKit â€” Admin UI
+ * Palette: #01564d (deep teal), #10b882 (emerald), #f59e0b (amber accent).
+ * No border-radius anywhere. All form inputs use !important to beat WP core.
+ */
+
+:root {
+    --dnk-c-dark: #01564d;
+    --dnk-c-bright: #10b882;
+    --dnk-c-accent: #f59e0b;
+    --dnk-c-bg: #eef2f4;
+    --dnk-c-card: #ffffff;
+    --dnk-c-border: #d8dee6;
+    --dnk-c-text: #0e2a26;
+    --dnk-c-muted: #5e7370;
+}
+
+#wpcontent {
+    padding-left: 0 !important;
+    background: var(--dnk-c-bg);
+}
+#wpbody-content {
+    padding-bottom: 0 !important;
+}
+
+.dnk-wrap {
+    background: var(--dnk-c-bg);
+    min-height: calc(100vh - 32px);
+    margin-left: -20px;
+}
+.dnk-wrap * {
+    box-sizing: border-box;
+}
+
+/* Hide WordPress admin notices on our pages */
+body[class*='page_divinationkit'] #wpbody-content > .notice,
+body[class*='page_divinationkit'] #wpbody-content > .update-nag,
+body[class*='page_divinationkit'] #wpbody-content > .updated,
+body[class*='page_divinationkit'] #wpbody-content > .error,
+body[class*='page_divinationkit'] #wpbody-content > div.notice,
+body[class*='page_divinationkit'] .update-nag {
+    display: none !important;
+}
+
+/* ------------------ HERO ------------------ */
+.dnk-hero {
+    background: linear-gradient(
+        135deg,
+        #013a34 0%,
+        var(--dnk-c-dark) 55%,
+        var(--dnk-c-bright) 100%
+    );
+    color: #fff;
+    padding: 32px 0 0 0;
+}
+
+.dnk-hero-inner,
+.dnk-tabs,
+.dnk-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.dnk-hero-inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.dnk-hero-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 18px;
+    color: #fff;
+}
+
+.dnk-logo-img {
+    width: 52px;
+    display: block;
+    background: linear-gradient(
+        130deg,
+        var(--dnk-c-dark) 0%,
+        var(--dnk-c-bright) 100%
+    );
+    padding: 12px;
+}
+
+.dnk-logo-name {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+.dnk-title {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 6px 0;
+    line-height: 1.2;
+}
+
+.dnk-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    font-size: 14px;
+    max-width: 680px;
+}
+
+.dnk-hero-meta {
+    flex: 0 0 auto;
+    padding-top: 4px;
+}
+
+.dnk-version {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* ------------------ TABS ------------------ */
+.dnk-tabs {
+    display: flex;
+    gap: 2px;
+    padding-top: 12px;
+    padding-bottom: 0;
+}
+
+.dnk-tab {
+    color: rgba(255, 255, 255, 0.75);
+    background: transparent;
+    padding: 12px 22px;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 14px;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+    border: 0;
+}
+
+.dnk-tab:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+.dnk-tab:focus {
+    outline: none;
+    box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.4);
+}
+
+.dnk-tab.is-active {
+    background: var(--dnk-c-bg);
+    color: var(--dnk-c-dark);
+    font-weight: 600;
+}
+.dnk-tab.is-active:hover {
+    background: var(--dnk-c-bg);
+    color: var(--dnk-c-dark);
+}
+
+/* ------------------ CONTENT ------------------ */
+.dnk-content {
+    padding-top: 32px;
+    padding-bottom: 64px;
+}
+
+.dnk-notice {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+.dnk-notice-success {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #166534;
+}
+
+/* ------------------ SHORTCODE LIST ------------------ */
+.dnk-shortcodes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dnk-shortcode-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e7ecef;
+    flex-wrap: wrap;
+}
+.dnk-shortcode-row:last-child {
+    border-bottom: 0;
+}
+.dnk-shortcode-row:first-child {
+    padding-top: 0;
+}
+
+.dnk-shortcode-code {
+    display: inline-block;
+    background: #0f2925;
+    color: #a7f3d0;
+    padding: 6px 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    border: 1px solid #1f3d39;
+    border-radius: 0;
+    min-width: 160px;
+}
+
+.dnk-copy {
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    min-height: 0 !important;
+    line-height: 1.4 !important;
+}
+.dnk-copy.is-copied {
+    background: var(--dnk-c-bright) !important;
+    color: #fff !important;
+    border-color: var(--dnk-c-bright) !important;
+}
+
+.dnk-shortcode-desc {
+    color: var(--dnk-c-muted);
+    font-size: 13px;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* ------------------ GRID ------------------ */
+.dnk-grid {
+    display: grid;
+    gap: 20px;
+}
+.dnk-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.dnk-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 900px) {
+    .dnk-grid-2,
+    .dnk-grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ------------------ CARDS ------------------ */
+.dnk-card {
+    background: var(--dnk-c-card);
+    border: 1px solid var(--dnk-c-border);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px rgba(1, 86, 77, 0.04);
+}
+
+.dnk-card-title {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dnk-c-dark);
+}
+
+.dnk-card-help {
+    color: var(--dnk-c-muted);
+    margin: 0 0 20px 0;
+    font-size: 13px;
+}
+
+.dnk-stat {
+    text-align: center;
+    padding: 28px 20px;
+}
+.dnk-stat-num {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--dnk-c-dark);
+    line-height: 1;
+}
+.dnk-stat-label {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--dnk-c-muted);
+}
+
+.dnk-steps {
+    padding-left: 18px;
+    margin: 0;
+}
+.dnk-steps li {
+    margin-bottom: 16px;
+}
+.dnk-steps li:last-child {
+    margin-bottom: 0;
+}
+.dnk-steps p {
+    margin: 4px 0 8px 0;
+    color: var(--dnk-c-muted);
+    font-size: 13px;
+}
+
+.dnk-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.dnk-links li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e7ecef;
+}
+.dnk-links li:last-child {
+    border-bottom: 0;
+}
+.dnk-links a {
+    text-decoration: none;
+    color: var(--dnk-c-bright);
+    font-weight: 500;
+}
+.dnk-links a:hover {
+    color: var(--dnk-c-dark);
+}
+
+/* ------------------ FORM FIELDS ------------------ */
+.dnk-field {
+    margin-bottom: 20px;
+}
+.dnk-field:last-child {
+    margin-bottom: 0;
+}
+
+.dnk-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 40px;
+}
+.dnk-fields-grid .dnk-field {
+    margin-bottom: 0;
+}
+@media (max-width: 720px) {
+    .dnk-fields-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dnk-label {
+    display: block;
+    font-weight: 600;
+    color: var(--dnk-c-dark);
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.dnk-label-suffix {
+    color: var(--dnk-c-accent);
+    font-weight: 500;
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.dnk-help {
+    margin: 6px 0 0 0;
+    color: var(--dnk-c-muted);
+    font-size: 12px;
+}
+
+/* Input overrides â€” !important everywhere because WP core forms.css fights us */
+.dnk-form input[type='text'].dnk-text,
+.dnk-form input[type='number'].dnk-number {
+    width: 100% !important;
+    max-width: 360px !important;
+    padding: 8px 12px !important;
+    border: 1px solid var(--dnk-c-border) !important;
+    border-radius: 0 !important;
+    font-size: 14px !important;
+    background: #fff !important;
+    color: var(--dnk-c-text) !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    min-height: 0 !important;
+    height: auto !important;
+}
+.dnk-form input[type='number'].dnk-number {
+    max-width: 100px !important;
+}
+
+.dnk-form input[type='text'].dnk-text:focus,
+.dnk-form input[type='number'].dnk-number:focus {
+    border-color: var(--dnk-c-bright) !important;
+    box-shadow: 0 0 0 3px rgba(16, 184, 130, 0.18) !important;
+    outline: none !important;
+}
+
+.dnk-range-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 480px;
+}
+.dnk-range-row input[type='range'] {
+    flex: 1;
+    accent-color: var(--dnk-c-bright);
+    height: 4px;
+}
+
+/* ------------------ COLOR + ALPHA PICKER ------------------ */
+.dnk-color-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid var(--dnk-c-border);
+    max-width: 480px;
+    width: 100%;
+}
+
+.dnk-color-swatch {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--dnk-c-border);
+    background-image:
+        linear-gradient(45deg, #ddd 25%, transparent 25%),
+        linear-gradient(-45deg, #ddd 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ddd 75%),
+        linear-gradient(-45deg, transparent 75%, #ddd 75%);
+    background-size: 10px 10px;
+    background-position:
+        0 0,
+        0 5px,
+        5px -5px,
+        -5px 0px;
+    position: relative;
+    overflow: hidden;
+}
+
+.dnk-color-swatch-fill {
+    position: absolute;
+    inset: 0;
+}
+
+.dnk-color-hex {
+    width: 36px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border: 1px solid var(--dnk-c-border) !important;
+    background: #fff !important;
+    cursor: pointer !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.dnk-color-alpha-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.dnk-color-alpha {
+    flex: 1;
+    accent-color: var(--dnk-c-bright);
+    height: 4px;
+}
+
+.dnk-color-alpha-val {
+    font-size: 12px;
+    color: var(--dnk-c-muted);
+    min-width: 36px;
+    text-align: right;
+}
+
+/* ------------------ BUTTONS ------------------ */
+.dnk-actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+}
+
+.dnk-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        background 0.15s,
+        border-color 0.15s,
+        color 0.15s;
+    border-radius: 0;
+}
+
+.dnk-btn-primary {
+    background: var(--dnk-c-bright);
+    color: #fff;
+}
+.dnk-btn-primary:hover,
+.dnk-btn-primary:focus {
+    background: var(--dnk-c-dark);
+    color: #fff;
+    outline: none;
+}
+
+.dnk-btn-secondary {
+    background: #fff;
+    color: var(--dnk-c-dark);
+    border-color: var(--dnk-c-dark);
+}
+.dnk-btn-secondary:hover {
+    background: var(--dnk-c-dark);
+    color: #fff;
+}
+
+.dnk-btn-link {
+    background: transparent;
+    padding: 0;
+    color: var(--dnk-c-bright);
+    font-weight: 500;
+}
+.dnk-btn-link:hover {
+    color: var(--dnk-c-dark);
+}
+
+/* ------------------ FEATURE TOGGLE (Tools tab) ------------------ */
+.dnk-feature-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.dnk-feature-info {
+    flex: 1;
+    min-width: 0;
+}
+.dnk-feature-info .dnk-card-title {
+    margin-bottom: 2px;
+}
+.dnk-feature-desc {
+    margin: 0;
+    color: var(--dnk-c-muted);
+    font-size: 13px;
+}
+
+.dnk-collapse-toggle {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--dnk-c-border);
+    background: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 0;
+}
+
+.dnk-collapse-toggle:hover {
+    background: var(--dnk-c-bg);
+}
+.dnk-collapse-toggle:focus {
+    outline: 2px solid rgba(16, 184, 130, 0.25);
+    outline-offset: 1px;
+}
+
+.dnk-chevron {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--dnk-c-dark);
+    border-bottom: 2px solid var(--dnk-c-dark);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    margin-top: -3px;
+}
+
+.dnk-collapse-toggle[aria-expanded='false'] .dnk-chevron {
+    transform: rotate(-45deg);
+    margin-top: 0;
+}
+
+.dnk-feature-body {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e7ecef;
+}
+
+.dnk-feature-body[hidden] {
+    display: none;
+}
+
+/* Switch */
+.dnk-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex: 0 0 44px;
+}
+.dnk-switch input[type='checkbox'] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+.dnk-switch-slider {
+    position: absolute;
+    inset: 0;
+    background: #c5cdd0;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    border-radius: 0;
+}
+.dnk-switch-slider::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease;
+    border-radius: 0;
+}
+.dnk-switch input[type='checkbox']:checked + .dnk-switch-slider {
+    background: var(--dnk-c-bright);
+}
+.dnk-switch input[type='checkbox']:checked + .dnk-switch-slider::before {
+    transform: translateX(20px);
+}
+.dnk-switch input[type='checkbox']:focus + .dnk-switch-slider {
+    box-shadow: 0 0 0 3px rgba(16, 184, 130, 0.25);
+}
+
+/* ------------------ ADDONS ------------------ */
+.dnk-addon-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+.dnk-addon-thumb {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--dnk-c-dark), var(--dnk-c-bright));
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dnk-addon-tagline {
+    color: var(--dnk-c-muted);
+    margin: 0 0 16px 0;
+    font-size: 13px;
+}
+
+.dnk-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+.dnk-badge-free {
+    background: #dcfce7;
+    color: #166534;
+}
+.dnk-badge-paid {
+    background: #fef3c7;
+    color: #92400e;
+}
