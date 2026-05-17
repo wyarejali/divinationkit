@@ -46,12 +46,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div class="dnk-feature-body" hidden>
 				<div class="dnk-fields-grid">
 					<?php foreach ( $feature->get_fields() as $field ) :
-						$value   = $values[ $field['id'] ] ?? '';
-						$name    = sprintf( 'dnk[%s][%s]', $id, $field['id'] );
-						$fid     = sprintf( 'dnk-%s-%s', $id, str_replace( '_', '-', $field['id'] ) );
-						$default = $feature->get_defaults()[ $field['id'] ] ?? '';
+						$is_info = ( $field['type'] ?? '' ) === 'info';
+						$value   = $is_info ? '' : ( $values[ $field['id'] ] ?? '' );
+						$name    = $is_info ? '' : sprintf( 'dnk[%s][%s]', $id, $field['id'] );
+						$fid     = $is_info ? '' : sprintf( 'dnk-%s-%s', $id, str_replace( '_', '-', $field['id'] ) );
+						$default = $is_info ? '' : ( $feature->get_defaults()[ $field['id'] ] ?? '' );
 						?>
-						<div class="dnk-field">
+						<div class="dnk-field <?php echo $is_info ? 'dnk-field-info' : ''; ?>">
+						<?php if ( $is_info ) : ?>
+							<div class="dnk-info-block">
+								<?php if ( ! empty( $field['label'] ) ) : ?>
+									<strong class="dnk-info-title"><?php echo esc_html( $field['label'] ); ?></strong>
+								<?php endif; ?>
+								<?php if ( ! empty( $field['help'] ) ) : ?>
+									<p class="dnk-info-body"><?php echo wp_kses_post( $field['help'] ); ?></p>
+								<?php endif; ?>
+							</div>
+						<?php else : ?>
 							<label class="dnk-label" for="<?php echo esc_attr( $fid ); ?>">
 								<?php echo esc_html( $field['label'] ); ?>
 								<?php if ( ! empty( $field['unit'] ) ) : ?>
@@ -91,6 +102,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 								       value="<?php echo esc_attr( $value ); ?>"
 								       class="dnk-number" />
 
+							<?php elseif ( 'select' === $field['type'] ) :
+								$opts = (array) ( $field['options'] ?? array() );
+								?>
+								<select id="<?php echo esc_attr( $fid ); ?>"
+								        name="<?php echo esc_attr( $name ); ?>"
+								        class="dnk-select">
+									<?php foreach ( $opts as $opt_value => $opt_label ) : ?>
+										<option value="<?php echo esc_attr( $opt_value ); ?>" <?php selected( (string) $value, (string) $opt_value ); ?>>
+											<?php echo esc_html( $opt_label ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+
+							<?php elseif ( 'multicheck' === $field['type'] ) :
+								$opts     = (array) ( $field['options'] ?? array() );
+								$selected = is_array( $value ) ? array_map( 'strval', $value ) : array();
+								?>
+								<div class="dnk-multicheck">
+									<?php foreach ( $opts as $opt_value => $opt_label ) :
+										$cid = $fid . '-' . sanitize_key( (string) $opt_value );
+										?>
+										<label class="dnk-multicheck-row" for="<?php echo esc_attr( $cid ); ?>">
+											<input type="checkbox"
+											       id="<?php echo esc_attr( $cid ); ?>"
+											       name="<?php echo esc_attr( $name ); ?>[]"
+											       value="<?php echo esc_attr( $opt_value ); ?>"
+											       <?php checked( in_array( (string) $opt_value, $selected, true ) ); ?> />
+											<span><?php echo esc_html( $opt_label ); ?></span>
+										</label>
+									<?php endforeach; ?>
+								</div>
+
 							<?php else : ?>
 								<input type="text"
 								       id="<?php echo esc_attr( $fid ); ?>"
@@ -102,6 +145,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<?php if ( ! empty( $field['help'] ) ) : ?>
 								<p class="dnk-help"><?php echo esc_html( $field['help'] ); ?></p>
 							<?php endif; ?>
+						<?php endif; /* is_info */ ?>
 						</div>
 					<?php endforeach; ?>
 				</div>

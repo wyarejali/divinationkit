@@ -20,7 +20,11 @@ class Assets {
 
 	public function enqueue_frontend(): void {
 		foreach ( $this->features->all() as $feature ) {
-			if ( ! $this->settings->is_tool_enabled( $feature->get_id() ) ) {
+			$id = $feature->get_id();
+			if ( ! $this->settings->is_tool_enabled( $id ) ) {
+				continue;
+			}
+			if ( ! $feature->should_load_on_frontend( $this->settings->tool( $id ) ) ) {
 				continue;
 			}
 
@@ -58,10 +62,15 @@ class Assets {
 		$tools = '';
 
 		foreach ( $this->features->all() as $feature ) {
-			if ( ! $this->settings->is_tool_enabled( $feature->get_id() ) ) {
+			$id = $feature->get_id();
+			if ( ! $this->settings->is_tool_enabled( $id ) ) {
 				continue;
 			}
-			$tools .= $feature->inline_css( $this->settings->tool( $feature->get_id() ) );
+			$values = $this->settings->tool( $id );
+			if ( ! $feature->should_load_on_frontend( $values ) ) {
+				continue;
+			}
+			$tools .= $feature->inline_css( $values );
 		}
 
 		$payload = trim( $css . $tools );

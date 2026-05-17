@@ -1,0 +1,42 @@
+/*
+ * DiviNationKit — Reading Progress Bar
+ * Variables injected by the plugin:
+ *   --dnk-rp-bar     fill color
+ *   --dnk-rp-track   empty rail color
+ *   --dnk-rp-height  bar height in px
+ */
+
+.dnk-progress-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: var(--dnk-rp-height, 4px);
+    background: var(--dnk-rp-track, rgba(0, 0, 0, 0.08));
+    z-index: 99999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.dnk-progress-bar.is-top {
+    top: 0;
+}
+
+.dnk-progress-bar.is-bottom {
+    bottom: 0;
+}
+
+.dnk-progress-bar-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--dnk-rp-bar, #10b882);
+    transform-origin: left center;
+    will-change: width;
+    transition: width 0.05s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dnk-progress-bar-fill {
+        transition: none;
+    }
+}

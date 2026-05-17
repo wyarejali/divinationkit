@@ -8,10 +8,26 @@
 
     $design     = $settings->design();
     $shortcodes = array(
-    array(
-        'tag'  => 'current_year',
-        'desc' => __( 'Outputs the current 4-digit year. Drop it in your footer to never edit it again.', 'divinationkit' ),
-    ),
+        array(
+            'tag'  => 'current_year',
+            'desc' => __( 'Outputs the current 4-digit year. Drop it in your footer to never edit it again.', 'divinationkit' ),
+        ),
+        array(
+            'tag'  => 'copyright',
+            'desc' => __( 'Copyright line. Optional attrs: start="2018" (year range) and name="My Site". Example: [copyright start="2018" name="DiviNationKit"] → © 2018–2026 DiviNationKit.', 'divinationkit' ),
+        ),
+        array(
+            'tag'  => 'reading_time',
+            'desc' => __( 'Estimated reading time for the current post. Optional attrs: wpm="200" and suffix="min read". Returns empty outside the post loop unless you pass words="450".', 'divinationkit' ),
+        ),
+        array(
+            'tag'  => 'site_url',
+            'desc' => __( 'The site\'s home URL. Optional path="/contact" to append a relative path.', 'divinationkit' ),
+        ),
+        array(
+            'tag'  => 'user_first_name',
+            'desc' => __( 'Logged-in user\'s first name. Optional fallback="there" for visitors who aren\'t logged in.', 'divinationkit' ),
+        ),
     );
 ?>
 

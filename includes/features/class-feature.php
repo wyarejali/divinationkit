@@ -39,6 +39,26 @@ abstract class Feature {
     abstract public function get_fields(): array;
 
     /**
+     * Subscribe to WordPress hooks. Called by the Plugin bootstrap only when
+     * the feature is enabled. Default is a no-op — features that only emit
+     * CSS/JS via the Assets pipeline don't need to override this.
+     */
+    public function register(): void {}
+
+    /**
+     * Whether this feature should load its CSS/JS/inline-CSS on the current
+     * frontend request. Called by Assets after is_tool_enabled() passes.
+     *
+     * Default: true (load everywhere). Features like Reading Progress Bar
+     * override this to only load on selected post types.
+     *
+     * @param array $values Saved feature values (whatever Settings::tool() returns).
+     */
+    public function should_load_on_frontend( array $values ): bool {
+        return true;
+    }
+
+    /**
      * Sanitize submitted values for this feature.
      */
     public function sanitize( array $input ): array {
@@ -46,6 +66,9 @@ abstract class Feature {
         $out['enabled'] = !empty( $input['enabled'] ) ? 1 : 0;
 
         foreach ( $this->get_fields() as $field ) {
+            if ( ( $field['type'] ?? '' ) === 'info' || empty( $field['id'] ) ) {
+                continue;
+            }
             $id    = $field['id'];
             $value = $input[$id] ?? null;
 
@@ -70,6 +93,17 @@ abstract class Feature {
                 if ( isset( $field['max'] ) ) {
                     $out[$id] = min( (float) $field['max'], $out[$id] );
                 }
+                break;
+            case 'select':
+                $allowed   = array_keys( (array) ( $field['options'] ?? array() ) );
+                $candidate = is_string( $value ) || is_int( $value ) ? (string) $value : '';
+                $default   = (string) ( $this->get_defaults()[$id] ?? ( $allowed[0] ?? '' ) );
+                $out[$id]  = in_array( $candidate, $allowed, true ) ? $candidate : $default;
+                break;
+            case 'multicheck':
+                $allowed  = array_keys( (array) ( $field['options'] ?? array() ) );
+                $vals     = is_array( $value ) ? array_map( 'strval', $value ) : array();
+                $out[$id] = array_values( array_intersect( $vals, $allowed ) );
                 break;
             case 'text':
             default:

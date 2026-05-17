@@ -184,6 +184,41 @@ body[class*='page_divinationkit'] .update-nag {
     color: #166534;
 }
 
+.dnk-notice-error {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #991b1b;
+}
+
+/* ------------------ INFO BLOCK (fields-less features) ------------------ */
+.dnk-field-info {
+    grid-column: 1 / -1;
+}
+.dnk-info-block {
+    background: #f3f8f6;
+    border-left: 3px solid var(--dnk-c-bright);
+    padding: 14px 16px;
+    color: var(--dnk-c-text);
+    font-size: 13px;
+    line-height: 1.55;
+}
+.dnk-info-title {
+    display: block;
+    font-weight: 600;
+    color: var(--dnk-c-dark);
+    margin-bottom: 4px;
+}
+.dnk-info-body {
+    margin: 0;
+}
+.dnk-info-body code {
+    background: #0f2925;
+    color: #a7f3d0;
+    padding: 1px 6px;
+    font-size: 12px;
+    border-radius: 0;
+}
+
 /* ------------------ SHORTCODE LIST ------------------ */
 .dnk-shortcodes {
     list-style: none;
@@ -393,6 +428,43 @@ body[class*='page_divinationkit'] .update-nag {
     max-width: 100px !important;
 }
 
+.dnk-form select.dnk-select {
+    width: 100% !important;
+    max-width: 360px !important;
+    padding: 8px 12px !important;
+    border: 1px solid var(--dnk-c-border) !important;
+    border-radius: 0 !important;
+    font-size: 14px !important;
+    background: #fff !important;
+    color: var(--dnk-c-text) !important;
+    box-shadow: none !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+}
+.dnk-form select.dnk-select:focus {
+    border-color: var(--dnk-c-bright) !important;
+    box-shadow: 0 0 0 3px rgba(16, 184, 130, 0.18) !important;
+    outline: none !important;
+}
+
+.dnk-multicheck {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px 16px;
+    max-width: 480px;
+}
+.dnk-multicheck-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--dnk-c-text);
+    cursor: pointer;
+}
+.dnk-multicheck-row input[type='checkbox'] {
+    margin: 0;
+}
+
 .dnk-form input[type='text'].dnk-text:focus,
 .dnk-form input[type='number'].dnk-number:focus {
     border-color: var(--dnk-c-bright) !important;
@@ -541,6 +613,19 @@ body[class*='page_divinationkit'] .update-nag {
     display: flex;
     align-items: center;
     gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    margin: -8px -12px;
+    padding: 8px 12px;
+    border-radius: 0;
+    transition: background 0.12s ease;
+}
+.dnk-feature-head:hover .dnk-collapse-toggle {
+    background: #fff;
+}
+.dnk-feature-head .dnk-switch,
+.dnk-feature-head .dnk-switch-slider {
+    cursor: pointer;
 }
 
 .dnk-feature-info {

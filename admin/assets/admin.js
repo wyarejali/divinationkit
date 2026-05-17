@@ -11,6 +11,7 @@
         initRangeBindings();
         initFeatureCards();
         initCopyButtons();
+        initAjaxSave();
     });
 
     /* ---------- post-save notice cleanup ---------- */
@@ -192,22 +193,113 @@
         features.forEach(function (feature) {
             var toggle   = feature.querySelector('.dnk-feature-toggle');
             var collapse = feature.querySelector('.dnk-collapse-toggle');
+            var head     = feature.querySelector('.dnk-feature-head');
             var body     = feature.querySelector('.dnk-feature-body');
 
-            // toggle just controls the enabled state — does not auto-expand/collapse
-            toggle.addEventListener('change', function () {
-                feature.classList.toggle('is-enabled', toggle.checked);
-            });
+            // the on/off switch just toggles enabled state; it never expands the card
+            if (toggle) {
+                toggle.addEventListener('change', function () {
+                    feature.classList.toggle('is-enabled', toggle.checked);
+                });
+            }
 
-            collapse.addEventListener('click', function () {
-                var expanded = collapse.getAttribute('aria-expanded') === 'true';
-                collapse.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-                if (expanded) {
-                    body.setAttribute('hidden', 'hidden');
-                } else {
-                    body.removeAttribute('hidden');
+            // the whole head row is clickable — title, description, chevron all work
+            if (head && collapse && body) {
+                head.addEventListener('click', function (e) {
+                    // ignore clicks that landed inside the on/off switch
+                    if (e.target.closest('.dnk-switch')) return;
+                    toggleBody(collapse, body);
+                });
+            }
+        });
+    }
+
+    function toggleBody(collapse, body) {
+        var expanded = collapse.getAttribute('aria-expanded') === 'true';
+        collapse.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        if (expanded) {
+            body.setAttribute('hidden', 'hidden');
+        } else {
+            body.removeAttribute('hidden');
+        }
+    }
+
+    /* ---------- AJAX save ---------- */
+
+    function initAjaxSave() {
+        var forms = document.querySelectorAll('.dnk-form');
+        if (!forms.length) return;
+
+        forms.forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                var endpoint = window.ajaxurl;
+                if (!endpoint || typeof FormData !== 'function' || typeof fetch !== 'function') {
+                    return; // fall back to the standard form post
                 }
+
+                e.preventDefault();
+
+                var btn = form.querySelector('button[type="submit"]');
+                var originalLabel = btn ? btn.textContent : '';
+                if (btn) {
+                    btn.disabled = true;
+                    btn.dataset.originalLabel = originalLabel;
+                    btn.textContent = btn.getAttribute('data-saving-label') || 'Saving…';
+                }
+
+                var data = new FormData(form);
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: data
+                })
+                .then(function (r) {
+                    return r.json().catch(function () { return null; });
+                })
+                .then(function (json) {
+                    if (json && json.success) {
+                        var msg = (json.data && json.data.message) || 'Settings saved.';
+                        showNotice('success', msg);
+                    } else {
+                        var err = (json && json.data && json.data.message) || 'Save failed. Please try again.';
+                        showNotice('error', err);
+                    }
+                })
+                .catch(function () {
+                    showNotice('error', 'Network error. Please try again.');
+                })
+                .then(function () {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = btn.dataset.originalLabel || 'Save changes';
+                    }
+                });
             });
         });
+    }
+
+    function showNotice(type, message) {
+        var content = document.querySelector('.dnk-content');
+        if (!content) return;
+
+        var existing = content.querySelector('.dnk-notice.is-dynamic');
+        if (existing && existing.parentNode) {
+            existing.parentNode.removeChild(existing);
+        }
+
+        var notice = document.createElement('div');
+        notice.className = 'dnk-notice is-dynamic dnk-notice-' + type;
+        notice.setAttribute('role', type === 'error' ? 'alert' : 'status');
+        notice.textContent = message;
+        content.insertBefore(notice, content.firstChild);
+
+        setTimeout(function () {
+            notice.style.transition = 'opacity 0.35s ease';
+            notice.style.opacity = '0';
+            setTimeout(function () {
+                if (notice.parentNode) notice.parentNode.removeChild(notice);
+            }, 360);
+        }, 3500);
     }
 })();

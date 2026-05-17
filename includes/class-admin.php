@@ -30,6 +30,7 @@ class Admin {
 		add_action( 'admin_menu', array( $this, 'register_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'admin_post_' . self::ACTION, array( $this, 'handle_save' ) );
+		add_action( 'wp_ajax_' . self::ACTION, array( $this, 'handle_save_ajax' ) );
 		add_action( 'current_screen', array( $this, 'suppress_admin_notices' ) );
 		add_filter( 'plugin_action_links_' . DIVINATIONKIT_BASENAME, array( $this, 'plugin_action_links' ) );
 	}
@@ -111,6 +112,31 @@ class Admin {
 		}
 		check_admin_referer( self::NONCE );
 
+		$this->save_settings_from_post();
+
+		$redirect = isset( $_POST['_wp_http_referer'] )
+			? esc_url_raw( wp_unslash( $_POST['_wp_http_referer'] ) )
+			: admin_url( 'admin.php?page=' . self::SLUG );
+
+		$redirect = add_query_arg( 'dnk-saved', '1', $redirect );
+		wp_safe_redirect( $redirect );
+		exit;
+	}
+
+	public function handle_save_ajax(): void {
+		if ( ! current_user_can( self::CAP ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to do this.', 'divinationkit' ) ), 403 );
+		}
+		if ( ! check_ajax_referer( self::NONCE, '_wpnonce', false ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security check failed. Please reload the page and try again.', 'divinationkit' ) ), 400 );
+		}
+
+		$this->save_settings_from_post();
+
+		wp_send_json_success( array( 'message' => __( 'Settings saved.', 'divinationkit' ) ) );
+	}
+
+	private function save_settings_from_post(): void {
 		$section = isset( $_POST['dnk_section'] ) ? sanitize_key( wp_unslash( $_POST['dnk_section'] ) ) : '';
 		$raw     = isset( $_POST['dnk'] ) && is_array( $_POST['dnk'] ) ? wp_unslash( $_POST['dnk'] ) : array();
 
@@ -123,14 +149,6 @@ class Admin {
 				$this->save_tools( $raw );
 				break;
 		}
-
-		$redirect = isset( $_POST['_wp_http_referer'] )
-			? esc_url_raw( wp_unslash( $_POST['_wp_http_referer'] ) )
-			: admin_url( 'admin.php?page=' . self::SLUG );
-
-		$redirect = add_query_arg( 'dnk-saved', '1', $redirect );
-		wp_safe_redirect( $redirect );
-		exit;
 	}
 
 	private function save_design( array $raw ): void {

@@ -3,7 +3,7 @@
  * Plugin Name:       DiviNationKit
  * Plugin URI:        https://www.divinationkit.com/
  * Description:       Admin control panel for DiviNationKit design tweaks, mobile menu, and content tools — built to extend the Divi theme.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Wyarej Ali
@@ -14,11 +14,11 @@
  * Domain Path:       /languages
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
 }
 
-define( 'DIVINATIONKIT_VERSION', '1.0.0' );
+define( 'DIVINATIONKIT_VERSION', '1.0.1' );
 define( 'DIVINATIONKIT_FILE', __FILE__ );
 define( 'DIVINATIONKIT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DIVINATIONKIT_URL', plugin_dir_url( __FILE__ ) );
