@@ -36,6 +36,8 @@
 	<input type="hidden" name="action" value="<?php echo esc_attr( \DiviNationKit\Admin::ACTION ); ?>" />
 	<input type="hidden" name="dnk_section" value="general" />
 
+	<?php \DiviNationKit\Admin::render_action_bar( 'top' ); ?>
+
 	<section class="dnk-card">
 		<h2 class="dnk-card-title"><?php esc_html_e( 'Layout', 'divinationkit' ); ?></h2>
 		<p class="dnk-card-help"><?php esc_html_e( 'Site-wide spacing and rhythm. New layout options drop into this grid automatically.', 'divinationkit' ); ?></p>
@@ -109,9 +111,7 @@
 	</ul>
 </section>
 
-	<div class="dnk-actions">
-		<button type="submit" class="dnk-btn dnk-btn-primary"><?php esc_html_e( 'Save changes', 'divinationkit' ); ?></button>
-	</div>
+	<?php \DiviNationKit\Admin::render_action_bar(); ?>
 </form>
 
 

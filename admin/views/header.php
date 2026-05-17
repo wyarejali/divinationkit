@@ -27,7 +27,7 @@
 					     alt="<?php esc_attr_e( 'DiviNationKit', 'divinationkit' ); ?>" />
 				</div>
 				<div class="dnk-hero-text">
-					<h1 class="dnk-title"><?php echo esc_html( $title ); ?></h1>
+					<h1 class="dnk-title"><?php echo esc_html( $title ); ?> <span class="dnk-stage">Beta</span></h1>
 					<p class="dnk-subtitle"><?php echo esc_html( $description ); ?></p>
 				</div>
 

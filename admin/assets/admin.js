@@ -27,7 +27,9 @@
                     var clean = url.pathname + (qs ? '?' + qs : '') + url.hash;
                     window.history.replaceState({}, document.title, clean);
                 }
-            } catch (e) { /* noop */ }
+            } catch (e) {
+                /* noop */
+            }
         }
 
         var notice = document.querySelector('.dnk-notice-success');
@@ -36,7 +38,9 @@
         setTimeout(function () {
             notice.style.transition = 'opacity 0.35s ease';
             notice.style.opacity = '0';
-            setTimeout(function () { notice.parentNode && notice.parentNode.removeChild(notice); }, 360);
+            setTimeout(function () {
+                notice.parentNode && notice.parentNode.removeChild(notice);
+            }, 360);
         }, 3500);
     }
 
@@ -50,7 +54,8 @@
                 var done = function () {
                     var original = btn.dataset.originalLabel || btn.textContent;
                     btn.dataset.originalLabel = original;
-                    btn.textContent = btn.getAttribute('data-copied-label') || 'Copied!';
+                    btn.textContent =
+                        btn.getAttribute('data-copied-label') || 'Copied!';
                     btn.classList.add('is-copied');
                     setTimeout(function () {
                         btn.textContent = original;
@@ -59,7 +64,10 @@
                 };
 
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(done).catch(fallback);
+                    navigator.clipboard
+                        .writeText(text)
+                        .then(done)
+                        .catch(fallback);
                 } else {
                     fallback();
                 }
@@ -72,7 +80,9 @@
                     ta.style.opacity = '0';
                     document.body.appendChild(ta);
                     ta.select();
-                    try { document.execCommand('copy'); } catch (e) {}
+                    try {
+                        document.execCommand('copy');
+                    } catch (e) {}
                     document.body.removeChild(ta);
                     done();
                 }
@@ -87,13 +97,15 @@
         var v = value.trim();
         var m;
 
-        m = v.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*([0-9]*\.?[0-9]+)\s*)?\)$/i);
+        m = v.match(
+            /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*([0-9]*\.?[0-9]+)\s*)?\)$/i,
+        );
         if (m) {
             return {
                 r: clamp(parseInt(m[1], 10), 0, 255),
                 g: clamp(parseInt(m[2], 10), 0, 255),
                 b: clamp(parseInt(m[3], 10), 0, 255),
-                a: m[4] !== undefined ? clamp(parseFloat(m[4]), 0, 1) : 1
+                a: m[4] !== undefined ? clamp(parseFloat(m[4]), 0, 1) : 1,
             };
         }
 
@@ -105,7 +117,7 @@
                 r: parseInt(hex.substr(0, 2), 16),
                 g: parseInt(hex.substr(2, 2), 16),
                 b: parseInt(hex.substr(4, 2), 16),
-                a: alphaHex ? parseInt(alphaHex, 16) / 255 : 1
+                a: alphaHex ? parseInt(alphaHex, 16) / 255 : 1,
             };
         }
 
@@ -115,20 +127,27 @@
                 r: parseInt(m[1] + m[1], 16),
                 g: parseInt(m[2] + m[2], 16),
                 b: parseInt(m[3] + m[3], 16),
-                a: 1
+                a: 1,
             };
         }
 
         return { r: 0, g: 0, b: 0, a: 1 };
     }
 
-    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+    function clamp(n, min, max) {
+        return Math.max(min, Math.min(max, n));
+    }
 
     function rgbToHex(r, g, b) {
-        return '#' + [r, g, b].map(function (c) {
-            var h = c.toString(16);
-            return h.length === 1 ? '0' + h : h;
-        }).join('');
+        return (
+            '#' +
+            [r, g, b]
+                .map(function (c) {
+                    var h = c.toString(16);
+                    return h.length === 1 ? '0' + h : h;
+                })
+                .join('')
+        );
     }
 
     function formatRgba(c) {
@@ -140,12 +159,16 @@
         var controls = document.querySelectorAll('.dnk-color-control');
         controls.forEach(function (control) {
             var hidden = control.querySelector('.dnk-color-input');
-            var hex    = control.querySelector('.dnk-color-hex');
-            var alpha  = control.querySelector('.dnk-color-alpha');
+            var hex = control.querySelector('.dnk-color-hex');
+            var alpha = control.querySelector('.dnk-color-alpha');
             var alphaVal = control.querySelector('.dnk-color-alpha-val');
-            var fill   = control.querySelector('.dnk-color-swatch-fill');
+            var fill = control.querySelector('.dnk-color-swatch-fill');
 
-            var current = parseColor(hidden.value || control.getAttribute('data-default') || '#10b882');
+            var current = parseColor(
+                hidden.value ||
+                    control.getAttribute('data-default') ||
+                    '#10b882',
+            );
 
             function sync(write) {
                 hex.value = rgbToHex(current.r, current.g, current.b);
@@ -161,7 +184,9 @@
 
             hex.addEventListener('input', function () {
                 var parsed = parseColor(hex.value);
-                current.r = parsed.r; current.g = parsed.g; current.b = parsed.b;
+                current.r = parsed.r;
+                current.g = parsed.g;
+                current.b = parsed.b;
                 sync(true);
             });
 
@@ -178,7 +203,9 @@
         var bound = document.querySelectorAll('input[data-bind]');
         bound.forEach(function (input) {
             input.addEventListener('input', function () {
-                var target = document.getElementById(input.getAttribute('data-bind'));
+                var target = document.getElementById(
+                    input.getAttribute('data-bind'),
+                );
                 if (target && target.value !== input.value) {
                     target.value = input.value;
                 }
@@ -191,10 +218,10 @@
     function initFeatureCards() {
         var features = document.querySelectorAll('.dnk-feature');
         features.forEach(function (feature) {
-            var toggle   = feature.querySelector('.dnk-feature-toggle');
+            var toggle = feature.querySelector('.dnk-feature-toggle');
             var collapse = feature.querySelector('.dnk-collapse-toggle');
-            var head     = feature.querySelector('.dnk-feature-head');
-            var body     = feature.querySelector('.dnk-feature-body');
+            var head = feature.querySelector('.dnk-feature-head');
+            var body = feature.querySelector('.dnk-feature-body');
 
             // the on/off switch just toggles enabled state; it never expands the card
             if (toggle) {
@@ -231,20 +258,42 @@
         if (!forms.length) return;
 
         forms.forEach(function (form) {
+            // Track which submit button the user actually clicked, since
+            // `event.submitter` isn't supported in older Safari.
+            var lastClicked = null;
+            var submitButtons = form.querySelectorAll('button[type="submit"]');
+            submitButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    lastClicked = btn;
+                });
+            });
+
             form.addEventListener('submit', function (e) {
                 var endpoint = window.ajaxurl;
-                if (!endpoint || typeof FormData !== 'function' || typeof fetch !== 'function') {
+                if (
+                    !endpoint ||
+                    typeof FormData !== 'function' ||
+                    typeof fetch !== 'function'
+                ) {
                     return; // fall back to the standard form post
                 }
 
                 e.preventDefault();
 
-                var btn = form.querySelector('button[type="submit"]');
-                var originalLabel = btn ? btn.textContent : '';
-                if (btn) {
-                    btn.disabled = true;
-                    btn.dataset.originalLabel = originalLabel;
-                    btn.textContent = btn.getAttribute('data-saving-label') || 'Saving…';
+                var submitter =
+                    e.submitter ||
+                    lastClicked ||
+                    form.querySelector('button[type="submit"]');
+                var allButtons = form.querySelectorAll('button[type="submit"]');
+
+                allButtons.forEach(function (b) {
+                    b.disabled = true;
+                });
+                if (submitter) {
+                    submitter.dataset.originalLabel = submitter.textContent;
+                    submitter.textContent =
+                        submitter.getAttribute('data-saving-label') ||
+                        'Saving…';
                 }
 
                 var data = new FormData(form);
@@ -252,54 +301,72 @@
                 fetch(endpoint, {
                     method: 'POST',
                     credentials: 'same-origin',
-                    body: data
+                    body: data,
                 })
-                .then(function (r) {
-                    return r.json().catch(function () { return null; });
-                })
-                .then(function (json) {
-                    if (json && json.success) {
-                        var msg = (json.data && json.data.message) || 'Settings saved.';
-                        showNotice('success', msg);
-                    } else {
-                        var err = (json && json.data && json.data.message) || 'Save failed. Please try again.';
-                        showNotice('error', err);
-                    }
-                })
-                .catch(function () {
-                    showNotice('error', 'Network error. Please try again.');
-                })
-                .then(function () {
-                    if (btn) {
-                        btn.disabled = false;
-                        btn.textContent = btn.dataset.originalLabel || 'Save changes';
-                    }
-                });
+                    .then(function (r) {
+                        return r.json().catch(function () {
+                            return null;
+                        });
+                    })
+                    .then(function (json) {
+                        var ok = !!(json && json.success);
+                        var message =
+                            (json && json.data && json.data.message) ||
+                            (ok
+                                ? 'Settings saved.'
+                                : 'Save failed. Please try again.');
+                        showActionNotice(
+                            form,
+                            submitter,
+                            ok ? 'success' : 'error',
+                            message,
+                        );
+                    })
+                    .catch(function () {
+                        showActionNotice(
+                            form,
+                            submitter,
+                            'error',
+                            'Network error. Please try again.',
+                        );
+                    })
+                    .then(function () {
+                        allButtons.forEach(function (b) {
+                            b.disabled = false;
+                        });
+                        if (submitter && submitter.dataset.originalLabel) {
+                            submitter.textContent =
+                                submitter.dataset.originalLabel;
+                        }
+                    });
             });
         });
     }
 
-    function showNotice(type, message) {
-        var content = document.querySelector('.dnk-content');
-        if (!content) return;
+    function showActionNotice(form, submitter, type, message) {
+        // Clear all action notices in the form first.
+        form.querySelectorAll('.dnk-action-notice').forEach(function (n) {
+            clearTimeout(n._dnkTimer);
+            n.classList.remove('is-visible', 'is-success', 'is-error');
+            n.textContent = '';
+        });
 
-        var existing = content.querySelector('.dnk-notice.is-dynamic');
-        if (existing && existing.parentNode) {
-            existing.parentNode.removeChild(existing);
-        }
+        // Pick the notice slot next to the clicked button; fall back to any.
+        var bar = submitter ? submitter.closest('.dnk-actions') : null;
+        var notice = bar
+            ? bar.querySelector('.dnk-action-notice')
+            : form.querySelector('.dnk-action-notice');
+        if (!notice) return;
 
-        var notice = document.createElement('div');
-        notice.className = 'dnk-notice is-dynamic dnk-notice-' + type;
-        notice.setAttribute('role', type === 'error' ? 'alert' : 'status');
         notice.textContent = message;
-        content.insertBefore(notice, content.firstChild);
+        notice.classList.add('is-visible', 'is-' + type);
 
-        setTimeout(function () {
-            notice.style.transition = 'opacity 0.35s ease';
-            notice.style.opacity = '0';
+        notice._dnkTimer = setTimeout(function () {
+            notice.classList.remove('is-visible');
             setTimeout(function () {
-                if (notice.parentNode) notice.parentNode.removeChild(notice);
-            }, 360);
+                notice.classList.remove('is-success', 'is-error');
+                notice.textContent = '';
+            }, 240);
         }, 3500);
     }
 })();

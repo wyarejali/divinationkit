@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<input type="hidden" name="action" value="<?php echo esc_attr( \DiviNationKit\Admin::ACTION ); ?>" />
 	<input type="hidden" name="dnk_section" value="tools" />
 
+	<?php \DiviNationKit\Admin::render_action_bar( 'top' ); ?>
+
 	<?php
 	foreach ( $features->all() as $feature ) :
 		$id      = $feature->get_id();
@@ -153,7 +155,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</section>
 	<?php endforeach; ?>
 
-	<div class="dnk-actions">
-		<button type="submit" class="dnk-btn dnk-btn-primary"><?php esc_html_e( 'Save changes', 'divinationkit' ); ?></button>
-	</div>
+	<?php \DiviNationKit\Admin::render_action_bar(); ?>
 </form>
